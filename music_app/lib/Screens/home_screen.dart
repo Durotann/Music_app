@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 
 class Home_Page extends StatefulWidget {
   const Home_Page({super.key});
@@ -13,6 +14,15 @@ class _Home_PageState extends State<Home_Page> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: GNav(
+        gap: 20,
+        tabs: [
+          GButton(icon: Icons.home_fil
+          led),
+          GButton(icon: Icons.home_filled),
+          GButton(icon: Icons.favorite),
+        ],
+      ),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
