@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:music_app/Models/MusicDataResponse.dart';
 import 'dart:developer' as devLog;
 
-import 'MusicDataResponse.dart';
+import 'MusicDataResponse.dart' show MusicDataResponse;
 
 class ApiService {
   Future<List<MusicDataResponse>> getAllFetchMusicData() async {

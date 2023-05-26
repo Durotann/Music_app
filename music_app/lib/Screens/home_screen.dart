@@ -32,14 +32,6 @@ class _Home_PageState extends State<Home_Page> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: GNav(
-        gap: 20,
-        tabs: [
-          GButton(icon: Icons.home),
-          GButton(icon: Icons.home_filled),
-          GButton(icon: Icons.favorite),
-        ],
-      ),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
