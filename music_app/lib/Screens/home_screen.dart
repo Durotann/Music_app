@@ -172,7 +172,9 @@ class _Home_PageState extends State<Home_Page> {
                                             Text(musicList[index]
                                                 .title
                                                 .toString()),
-                                            Text("Dijits Dosanjh"),
+                                            Text(musicList[index]
+                                                .artist
+                                                .toString()),
                                           ],
                                         ),
                                       ),
@@ -218,7 +220,7 @@ class _Home_PageState extends State<Home_Page> {
             width: 330,
             height: 200,
             child: ListView.builder(
-              itemCount: musicList.length,
+              itemCount: 2,
               scrollDirection: Axis.vertical,
               itemBuilder: (context, index) {
                 return Padding(
