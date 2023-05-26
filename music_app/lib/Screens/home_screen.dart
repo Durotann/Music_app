@@ -3,6 +3,9 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
+import '../Models/ApiService.dart';
+import '../Models/MusicDataResponse.dart';
+
 class Home_Page extends StatefulWidget {
   const Home_Page({super.key});
 
@@ -11,14 +14,28 @@ class Home_Page extends StatefulWidget {
 }
 
 class _Home_PageState extends State<Home_Page> {
+  List<MusicDataResponse> musicList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchMusicData();
+  }
+
+  Future<void> fetchMusicData() async {
+    final musiclist = await ApiService().getAllFetchMusicData();
+    setState(() {
+      musicList = musiclist;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: GNav(
         gap: 20,
         tabs: [
-          GButton(icon: Icons.home_fil
-          led),
+          GButton(icon: Icons.home),
           GButton(icon: Icons.home_filled),
           GButton(icon: Icons.favorite),
         ],
@@ -106,7 +123,7 @@ class _Home_PageState extends State<Home_Page> {
               height: 200,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: 5,
+                itemCount: musicList.length,
                 itemBuilder: (context, index) {
                   return Column(
                     children: [
@@ -117,7 +134,8 @@ class _Home_PageState extends State<Home_Page> {
                           height: 176,
                           decoration: BoxDecoration(
                             image: DecorationImage(
-                              image: AssetImage("images/image1.png"),
+                              image: musicList[index].image.toString()
+                                  as ImageProvider,
                               fit: BoxFit.fill,
                             ),
                             borderRadius: BorderRadius.circular(18),
@@ -151,7 +169,9 @@ class _Home_PageState extends State<Home_Page> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceEvenly,
                                           children: [
-                                            Text("Moonchild Era"),
+                                            Text(musicList[index]
+                                                .title
+                                                .toString()),
                                             Text("Dijits Dosanjh"),
                                           ],
                                         ),
@@ -198,7 +218,7 @@ class _Home_PageState extends State<Home_Page> {
             width: 330,
             height: 200,
             child: ListView.builder(
-              itemCount: 2,
+              itemCount: musicList.length,
               scrollDirection: Axis.vertical,
               itemBuilder: (context, index) {
                 return Padding(
@@ -212,20 +232,16 @@ class _Home_PageState extends State<Home_Page> {
                     ),
                     child: ListTile(
                       leading: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          children: [
-                            Container(
-                              width: 64,
-                              height: 64,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(14),
-                                image: DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image: AssetImage("images/image1.png")),
-                              ),
-                            ),
-                          ],
+                        padding: EdgeInsets.all(8.0),
+                        child: Container(
+                          width: 64,
+                          height: 64,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(14),
+                            image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: AssetImage("images/image1.png")),
+                          ),
                         ),
                       ),
                     ),
