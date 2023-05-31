@@ -1,4 +1,9 @@
-class MusicDataResponse {
+import 'dart:convert';
+
+import 'package:json_annotation/json_annotation.dart';
+
+@JsonSerializable()
+class Music {
   String? id;
   String? title;
   String? album;
@@ -11,21 +16,22 @@ class MusicDataResponse {
   int? duration;
   String? site;
 
-  MusicDataResponse(
-      {required this.id,
-      required this.title,
-      required this.album,
-      required this.artist,
-      required this.genre,
-      required this.source,
-      required this.image,
-      required this.trackNumber,
-      required this.totalTrackCount,
-      required this.duration,
-      required this.site});
+  Music({
+    required this.id,
+    required this.title,
+    required this.album,
+    required this.artist,
+    required this.genre,
+    required this.source,
+    required this.image,
+    required this.trackNumber,
+    required this.totalTrackCount,
+    required this.site,
+    required this.duration,
+  });
 
-  factory MusicDataResponse.fromJson(Map<String, dynamic> json) {
-    return MusicDataResponse(
+  factory Music.fromJson(Map<String, dynamic> json) {
+    return Music(
         id: json["id"],
         title: json['title'],
         album: json['album'],
@@ -38,7 +44,6 @@ class MusicDataResponse {
         duration: json['duration'],
         site: json['site']);
   }
-
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;

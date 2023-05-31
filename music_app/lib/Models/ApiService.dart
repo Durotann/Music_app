@@ -1,13 +1,12 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:music_app/Models/MusicDataResponse.dart';
 import 'dart:developer' as devLog;
 
-import 'MusicDataResponse.dart' show MusicDataResponse;
+import 'package:music_app/Models/music.dart';
 
 class ApiService {
-  Future<List<MusicDataResponse>> getAllFetchMusicData() async {
+  Future<List<Music>> getMusics() async {
     const url = "https://storage.googleapis.com/uamp/catalog.json";
     Uri uri = Uri.parse(url);
     try {
@@ -18,7 +17,7 @@ class ApiService {
         final json = jsonDecode(body);
         final result = json['music'] as List<dynamic>;
         final musicList = result.map((e) {
-          return MusicDataResponse.fromJson(e);
+          return Music.fromJson(e);
         }).toList();
 
         debugPrint(response.body.toString());

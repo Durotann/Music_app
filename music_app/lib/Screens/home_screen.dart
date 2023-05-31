@@ -2,30 +2,28 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:music_app/Models/ApiService.dart';
 
-import '../Models/ApiService.dart';
-import '../Models/MusicDataResponse.dart';
+import '../Models/music.dart';
 
 class Home_Page extends StatefulWidget {
-  const Home_Page({super.key});
+  Home_Page({super.key});
 
   @override
   State<Home_Page> createState() => _Home_PageState();
 }
 
 class _Home_PageState extends State<Home_Page> {
-  List<MusicDataResponse> musicList = [];
-
-  @override
+  List<Music> _music = [];
   void initState() {
     super.initState();
     fetchMusicData();
   }
 
   Future<void> fetchMusicData() async {
-    final musiclist = await ApiService().getAllFetchMusicData();
+    final musiclist = await ApiService().getMusics();
     setState(() {
-      musicList = musiclist;
+      _music = musiclist;
     });
   }
 
@@ -115,70 +113,75 @@ class _Home_PageState extends State<Home_Page> {
               height: 200,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: musicList.length,
+                itemCount: _music.length,
                 itemBuilder: (context, index) {
-                  return Column(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(right: 16.0),
-                        child: Container(
-                          width: 260,
-                          height: 176,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: musicList[index].image.toString()
-                                  as ImageProvider,
-                              fit: BoxFit.fill,
-                            ),
-                            borderRadius: BorderRadius.circular(18),
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Padding(
-                                padding: EdgeInsets.only(
-                                    top: 86.0,
-                                    left: 8.0,
-                                    right: 8.0,
-                                    bottom: 8.0),
-                                child: ClipRect(
-                                  child: BackdropFilter(
-                                    filter: ImageFilter.blur(
-                                        sigmaX: 10.0, sigmaY: 10.0),
-                                    child: Container(
-                                      width: 244,
-                                      height: 82,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(12),
-                                        color: Color.fromRGBO(0, 0, 0, 0.25),
-                                      ),
-                                      child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 16.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            Text(musicList[index]
-                                                .title
-                                                .toString()),
-                                            Text(musicList[index]
-                                                .artist
-                                                .toString()),
-                                          ],
+                  return FutureBuilder(
+                    future: fetchMusicData(),
+                    builder: ((context, snapshot) {
+                      return Column(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(right: 16.0),
+                            child: Container(
+                              width: 260,
+                              height: 176,
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                image: Image.network(
+                                        _music[index].image.toString())
+                                    .image,
+                              )),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        top: 86.0,
+                                        left: 8.0,
+                                        right: 8.0,
+                                        bottom: 8.0),
+                                    child: ClipRect(
+                                      child: BackdropFilter(
+                                        filter: ImageFilter.blur(
+                                            sigmaX: 10.0, sigmaY: 10.0),
+                                        child: Container(
+                                          width: 244,
+                                          height: 82,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                            color:
+                                                Color.fromRGBO(0, 0, 0, 0.25),
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 16.0),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                Text(_music[index]
+                                                    .title
+                                                    .toString()),
+                                                Text(_music[index]
+                                                    .artist
+                                                    .toString()),
+                                              ],
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
+                                ],
                               ),
-                            ],
+                            ),
                           ),
-                        ),
-                      ),
-                    ],
+                        ],
+                      );
+                    }),
                   );
                 },
               ),
@@ -210,7 +213,7 @@ class _Home_PageState extends State<Home_Page> {
           ),
           Container(
             width: 330,
-            height: 200,
+            height: 100,
             child: ListView.builder(
               itemCount: 2,
               scrollDirection: Axis.vertical,
@@ -232,9 +235,6 @@ class _Home_PageState extends State<Home_Page> {
                           height: 64,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(14),
-                            image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: AssetImage("images/image1.png")),
                           ),
                         ),
                       ),
