@@ -1,10 +1,14 @@
 import 'dart:ui';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:music_app/Models/ApiService.dart';
 
 import '../Models/music.dart';
+
+var _music = <Music>[];
 
 class Home_Page extends StatefulWidget {
   Home_Page({super.key});
@@ -14,16 +18,16 @@ class Home_Page extends StatefulWidget {
 }
 
 class _Home_PageState extends State<Home_Page> {
-  List<Music> _music = [];
+  @override
   void initState() {
     super.initState();
-    fetchMusicData();
+    getMusic();
   }
 
-  Future<void> fetchMusicData() async {
-    final musiclist = await ApiService().getMusics();
+  Future<void> getMusic() async {
+    final musics = await ApiService().getAllFetchMusicData();
     setState(() {
-      _music = musiclist;
+      _music = musics;
     });
   }
 
@@ -114,74 +118,74 @@ class _Home_PageState extends State<Home_Page> {
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: _music.length,
-                itemBuilder: (context, index) {
-                  return FutureBuilder(
-                    future: fetchMusicData(),
-                    builder: ((context, snapshot) {
-                      return Column(
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(right: 16.0),
-                            child: Container(
-                              width: 260,
-                              height: 176,
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
+                itemBuilder: (BuildContext context, int index) {
+                  return Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(right: 16.0),
+                        child: Container(
+                          width: 260,
+                          height: 176,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              image: DecorationImage(
                                 image: Image.network(
                                         _music[index].image.toString())
                                     .image,
+                                fit: BoxFit.cover,
                               )),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                        top: 86.0,
-                                        left: 8.0,
-                                        right: 8.0,
-                                        bottom: 8.0),
-                                    child: ClipRect(
-                                      child: BackdropFilter(
-                                        filter: ImageFilter.blur(
-                                            sigmaX: 10.0, sigmaY: 10.0),
-                                        child: Container(
-                                          width: 244,
-                                          height: 82,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                            color:
-                                                Color.fromRGBO(0, 0, 0, 0.25),
-                                          ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 16.0),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                Text(_music[index]
-                                                    .title
-                                                    .toString()),
-                                                Text(_music[index]
-                                                    .artist
-                                                    .toString()),
-                                              ],
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    top: 86.0,
+                                    left: 8.0,
+                                    right: 8.0,
+                                    bottom: 8.0),
+                                child: ClipRect(
+                                  child: BackdropFilter(
+                                    filter: ImageFilter.blur(
+                                        sigmaX: 10.0, sigmaY: 10.0),
+                                    child: Container(
+                                      width: 244,
+                                      height: 82,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(12),
+                                        color: Color.fromRGBO(0, 0, 0, 0.25),
+                                      ),
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 16.0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Text(
+                                              _music[index].title.toString(),
+                                              style: TextStyle(
+                                                  color: Colors.white),
                                             ),
-                                          ),
+                                            Text(
+                                              _music[index].artist.toString(),
+                                              style: TextStyle(
+                                                  color: Color.fromRGBO(
+                                                      255, 255, 255, 0.60)),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ),
                                   ),
-                                ],
+                                ),
                               ),
-                            ),
+                            ],
                           ),
-                        ],
-                      );
-                    }),
+                        ),
+                      ),
+                    ],
                   );
                 },
               ),
