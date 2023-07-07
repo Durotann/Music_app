@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:developer' as devLog;
 
-import 'package:music_app/Models/music.dart';
+import 'music.dart';
 
 class ApiService {
-  Future<List<Music>> getMusics() async {
+  Future<List<Music>> getAllFetchMusicData() async {
     const url = "https://storage.googleapis.com/uamp/catalog.json";
     Uri uri = Uri.parse(url);
     try {

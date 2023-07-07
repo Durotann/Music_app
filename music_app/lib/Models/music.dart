@@ -32,17 +32,17 @@ class Music {
 
   factory Music.fromJson(Map<String, dynamic> json) {
     return Music(
-        id: json["id"],
-        title: json['title'],
-        album: json['album'],
-        artist: json['artist'],
-        genre: json['genre'],
-        source: json['source'],
-        image: json['image'],
-        trackNumber: json['trackNumber'],
-        totalTrackCount: json['totalTrackCount'],
-        duration: json['duration'],
-        site: json['site']);
+        id: json["id"] as String,
+        title: json['title'] as String,
+        album: json['album'] as String,
+        artist: json['artist'] as String,
+        genre: json['genre'] as String,
+        source: json['source'] as String,
+        image: json['image'] as String,
+        trackNumber: json['trackNumber'] as int,
+        totalTrackCount: json['totalTrackCount'] as int,
+        duration: json['duration'] as int,
+        site: json['site'] as String);
   }
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
